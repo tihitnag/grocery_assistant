@@ -1,0 +1,52 @@
+<!-- search_products.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Search</title>
+     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+
+<h2>Product Search</h2>
+
+<form method="get" action="{% url 'products' %}">
+ <input name='qurey' class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ qurey }}" placeholder="enter a prodcut name">
+   
+    <button class='mt-2 py-2 px-4 text-lg bg-teal-100 text-white rounded-xl flex items-center bg-green-400' type="submit">Search</button>
+
+</form>  
+<form method="post" action="{% url 'search_package' %}">
+    {% csrf_token %}
+    <input name='qurey_package' class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ qurey_package }}" placeholder="enter a package name">
+    <button class='mt-2 py-2 px-4 text-lg bg-teal-100 text-white rounded-xl flex items-center bg-green-400' type="submit">Search</button>
+</form>
+
+ <div class="col-span-3">
+    <div class="grid grid-cols-3 gap-3">
+     <div>
+            {% for item in product %}
+                <div>
+                <a href="{% url 'detail' item.id %}">
+                    {% if item.image_url %}
+                        <img src="{{ item.image_url }}" class="rounded-t-xl w-64 h-48">
+                        <p>{{ item.main_category_en }}</p>
+                    {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            {% for item in package %}
+                <div>
+                    {% if item.packaging_en %}
+                        <p>{{ item.packaging_en }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static  %}
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -25,9 +26,11 @@
           <div class="w-2/3 ml-4">
             <p class="text-lg font-bold text-teal-500 mb-2">{{ item.product_name }}</p>
             <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-            <p><strong>Package:</strong> {{ item.packaging_en }}</p>
+            <p><strong>prodcut name:</strong> {{ item.product_name }}</p>
             <p><strong>Label:</strong> {{ item.labels_en }}</p>
             <p><strong>Country:</strong> {{ item.countries_en }}</p>
+            <p class="text-gray-800"><strong>brand:</strong> {{ item.brand }}</p>
+            <p class="text-gray-800"><strong>serving size:</strong> {{ item.brand }}</p>
           </div>
         </div>
       </div>
@@ -35,8 +38,40 @@
       <div class="container mx-auto p-8 bg-white shadow-md rounded-lg">
         <div class="flex items-center justify-between">
           <div class="w-1/2">
-            <h1 class="text-2xl font-bold mb-4">{{ item.categories_en }}</h1>
+            <h1 class="text-2xl font-bold mb-4">nutrational score</h1>
+
             <p class="text-gray-800"><strong>Ingredients:</strong> {{ item.ingredients_text }}</p>
+            <h1 class="text-xl font-bold mb-4">postive points{{ total_positive_points }}</h1>
+            <p class="text-1xl  mb-4">fiber:{{fiber_positive }}(out of 5)</p>
+            <p class="text-1xl  mb-4">protein:{{protein_positive }}(out of 5)</p>
+            <p class="text-1xl  mb-4">fruits_vegetables_positive:{{fruits_vegetables_positive }}(out of 5)</p>
+            <h1 class="text-2xl  mb-4"><strong>negative points{{total_negative_points }}</strong></h1>
+            <p  class="text-1xl  mb-4"> energy: {{energy_negative }}(out of 10)</p>
+            <p class="text-1xl mb-4">suger: {{sugars_negative }}(out of 10)</p>
+            <p class="text-1xl mb-4">saturated_fats: {{saturated_fats_negative }}(out of 10)</p>
+            <p class="text-1xl  mb-4">salt: {{salt_negative }}(out of 10)</p>
+            <p class="text-gray-800">
+              <strong>nutro_score:</strong>"total_negative_points "-" total_positive_points" = {{ nutro_score }}
+            </p>
+                {% if nutro_score < 0 %}
+                    A
+                    <img src="{% static 'images/A.png' %}" class="rounded-t-xl w-64 h-48">
+                {% elif nutro_score <= 2 %}
+                    B
+                    <img src="{% static 'images/B.png' %}" class="rounded-t-xl w-64 h-48">
+                {% elif nutro_score <= 10 %}
+                    C
+                    <img src="{% static 'images/c.png' %}" class="rounded-t-xl w-64 h-48">
+                {% elif nutro_score <= 18 %}
+                    D
+                   <img src="{% static 'images/D.jpg' %}" class="rounded-t-xl w-64 h-48">
+                  
+                {% else %}
+                    E
+                    <img src="{% static 'images/E.jpg' %}" class="rounded-t-xl w-64 h-48">
+                {% endif %}
+
+
           </div>
           <div class="w-1/2 ml-8">
             <p class="text-gray-800">{{ item.nutrition_description }}</p>
@@ -44,24 +79,32 @@
         </div>
       </div>
 
-      <div class="mb-8"></div>
-
+      <div class="mb-8"> </div>
       <div class="container mx-auto p-8 bg-white shadow-md rounded-lg">
       <div class="flex items-center justify-between">
           <div class="w-1/2">
-            <h1 class="text-2xl font-bold mb-4">{{ total_positive_points }}</h1>
-            <h1 class="text-2xl font-bold mb-4">{{total_negative_points }}</h1>
+            <h1 class="text-2xl font-bold mb-4">enviromental score </h1>
+               
+              
             <p class="text-gray-800"><strong>Packaging:</strong> {{ item.packaging_en }}</p>
-            <p class="text-gray-800"><strong>nutro_score:</strong> {{ nutro_score }}</p>
-
           </div>
+        
           <div class="w-1/2 ml-8">
             <p class="text-gray-800">{{ item.environment_description }}</p>
+            <p class="text-gray-800">{{ item.package1 }}</p>
+            {% if package1 %}
+            <p>Material: {{ package1.0 }}</p>
+            <p>Type: {{ package1.1 }}</p>
+            <p>Category: {{ package1.2 }}</p>
+            <p>Eco Score: {{ package1.3 }}</p>
+            <p>Grade: {{ package1.4 }}</p>
+        {% else %}
+            <p>Unknown Material</p>
+        {% endif %}
           </div>
         </div>
       </div>
     {% endblock %}
   </div>
-
 </body>
 </html>

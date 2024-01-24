@@ -22,9 +22,7 @@
 
     <nav style ="background-color:#94f8be; border-radius: 10px;" class="py-6 px-8 flex justify-center items-center border-b border-black-800">
       <a href="/" class="flex items-center">
-      {% comment %} <img src="file:///C:/Users/Lenovo/Downloads/glass1.png" class="mr-2" alt="Glass Icon" width="57" height="57"> {% endcomment %}
-        <img src="{% static 'images/glass.png' %}" class="mr-2" alt="Glass Icon" width="57" height="57">
-          {% comment %} <img src="{% static 'images/glass.png' %}" class="rounded-t-xl"> {% endcomment %}
+      <img src="file:///C:/Users/Lenovo/Downloads/glass1.png" class="mr-2" alt="Glass Icon" width="57" height="57">
       <span class="text-5xl font-semibold text-teal-500 text-white  hover:text-teal-300 transition lemon-font">Details</span>
       </a>
   </nav>
@@ -43,12 +41,12 @@
           </div>
           <div class="w-2/3 ml-4">
             <p class="text-lg font-bold text-teal-500 mb-2">{{ item.product_name }}</p>
-            <p><strong>Quantity:</strong> {{ item.categories_en }}</p>
+            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
             <p><strong>prodcut name:</strong> {{ item.product_name }}</p>
             <p><strong>Label:</strong> {{ item.labels_en }}</p>
             <p><strong>Country:</strong> {{ item.countries_en }}</p>
-            <p class="text-gray-800"><strong>brand:</strong> {{ item.brands }}</p>
-            <p class="text-gray-800"><strong>serving size:</strong> {{ item.serving_size }}</p>
+            <p class="text-gray-800"><strong>brand:</strong> {{ item.brand }}</p>
+            <p class="text-gray-800"><strong>serving size:</strong> {{ item.brand }}</p>
           </div>
         </div>
       </div>
@@ -73,22 +71,18 @@
             </p>
                 {% if nutro_score < 0 %}
                     A
-                    <img src="{% static 'images/A.png' %}" class="rounded-t-xl w-64 h-48">
                 {% elif nutro_score <= 2 %}
                     B
-                    <img src="{% static 'images/B.png' %}" class="rounded-t-xl w-64 h-48">
                 {% elif nutro_score <= 10 %}
                     C
-                    <img src="{% static 'images/c.png' %}" class="rounded-t-xl w-64 h-48">
                 {% elif nutro_score <= 18 %}
                     D
                    <img src="{% static 'images/D.jpg' %}" class="rounded-t-xl w-64 h-48">
+
                   
                 {% else %}
                     E
-                    <img src="{% static 'images/E.jpg' %}" class="rounded-t-xl w-64 h-48">
                 {% endif %}
-
 
 
           </div>
@@ -99,15 +93,15 @@
       </div>
 
       <div class="mb-8"> </div>
-      <div class="container mx-auto p-8 bg-white shadow-md rounded-lg">
+ <div class="container mx-auto p-8 bg-white shadow-md rounded-lg">
       <div class="flex items-center justify-between">
           <div class="w-1/2">
             <h1 class="text-2xl font-bold mb-4">enviromental score </h1>
                
               
             <p class="text-gray-800"><strong>Packaging:</strong> {{ item.packaging_en }}</p>
-          </div>
-        
+          
+        </div>
           <div class="w-1/2 ml-8">
             <p class="text-gray-800">{{ item.environment_description }}</p>
             <p class="text-gray-800">{{ item.package1 }}</p>
@@ -122,32 +116,16 @@
         {% endif %}
           </div>
         </div>
+
+          </div>
+        
+          <div class="w-1/2 ml-8">
+            <p class="text-gray-800">{{ item.environment_description }}</p>
+          </div>
+        </div>
       </div>
     {% endblock %}
   </div>
- <div class="container mx-auto p-8 bg-white shadow-md rounded-lg mb-8">
-  <p class="mt-2 text-sm text-gray-600">recommendation</p>
-    <div class="flex items-center justify-between">
-        
-            <div class="flex items-center justify-between">
-               
-
-                {% for recom in recommendation %}
-                <div class="mt-4 mx-4 w-144 h-64">
-                <a href="{% url 'detail' recom.id %}">
-                    <img src="{{ recom.image_url }}" alt="{{ recom.main_category_en }}" class="rounded-t-xl w-100 h-48 object-cover hover:opacity-80 transition">
-                    <p class="mt-2 text-gray-800 text-1xl"><strong>{{ recom.product_name }}</strong></p>
-                    <p class="mt-2 text-sm text-gray-600">{{ recom.main_category_en }}</p>
-                </a></div>
-                {% endfor %}
-
-            </div>
-        </div>
-    </div>
-</div>
- <a href="{% url 'search_products'  %}">
- <button class='mt-2 py-2 px-4 text-lg bg-teal-100 text-white rounded-xl flex items-center bg-green-400' type="button">back to home</button>
-</a>
   <script src = "core/bootstrap.min.js"></script> 
 </body>
 </html>

@@ -1,27 +1,178 @@
 <!-- search_products.html -->
 <!DOCTYPE html>
+{% load static  %}
 <html>
 <head>
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Search</title>
      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body  class="bg-gray-200 p-8">
-
-<h2>Product Search</h2>
-
- <form method="get" action="{% url 'products' %}">
- <input name='qurey' class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ qurey }}" placeholder="enter a prodcut name">
- <input name='qurey_package' class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ qurey_package }}" placeholder="enter a package name">
-  
-    <button class='mt-2 py-2 px-4 text-lg bg-teal-100 text-white rounded-xl flex items-center bg-green-400' type="submit">Search</button>
-
- </form> 
-   
- {% comment %} <form method="get" action="{% url 'packages' %}">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lemon&display=swap">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <input name='qurey_package' class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ qurey_package }}" placeholder="enter a package name">
-<button class='mt-2 py-2 px-4 text-lg bg-teal-100 text-white rounded-xl flex items-center bg-green-400' type="submit">Search</button>
-</form>   {% endcomment %}
+    
+
+     <style>
+
+
+
+
+        body {
+            background-color: #f5f5dc; /* Kolor morelowy */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Umieszcza treść na górze strony */
+            min-height: 100vh;
+            margin: 0;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Lemon', cursive;
+            font-size: 3rem; /* Ustaw wielkość napisu */
+            color: #9e502b; /* Kolor morelowy */
+            margin-bottom: 1rem; /* Decrease the margin at the bottom */
+            margin-top: 0; /* Reset top margin */
+            cursor: pointer;
+           
+            
+        }
+
+        .navbar-light {
+            background-color: transparent !important;
+
+            box-shadow: none !important; /* Remove white strip (box-shadow) from Bootstrap navbar */
+        }
+        
+        a {
+            text-decoration: none; /* Remove underline for all links */
+        }
+
+        
+        .navbar-nav .nav-link {
+            font-size: 18px; /* Set the font size for nav links */
+            padding: 0.75rem 1rem; /* Set padding for nav links */
+            margin-right: 15px; /* Increase space between nav links */
+            
+        }
+
+        .navbar-toggler {
+            border: none; /* Remove border from the toggle button */
+        }
+
+        input[type="text"] {
+            
+            padding: 12px 20px; /* Adjust padding to match the navbar */
+            width: calc(100% - 40px); /* Set width to match the navbar and subtract padding */
+            
+        }
+
+         /* Center image and text */
+         .title-container  {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .title-container  img {
+            margin-right: 10px;
+        }
+
+        /* Adjustments for smaller screens */
+
+        @media (max-width: 768px) {
+            .navbar-nav .nav-link {
+                margin-right: 0; /* Remove margin for small screens */
+            }
+        }
+
+    </style>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container title-container ">
+        <a href="#" onclick="resetPage()">
+            <h1 class="d-flex align-items-center">
+                {% comment %} <img src="file:///C:/Users/Lenovo/Downloads/peach.png" alt="Shopping Cart" width="50" height="50" style="margin-right: 10px;"> {% endcomment %}
+           <img src="{% static 'images/peach.png' %}" class="mr-2" alt="Glass Icon" width="57" height="57">
+                {% comment %} <img src="{% static 'peach.png' %}" class="mr-2" alt="Glass Icon" width="57" height="57"> {% endcomment %}
+            Grocery Shopping Assistant</h1>
+        </a>
+    </div>
+
+   
+
+{% include 'core/navbar.html' %}
+        {% comment %} <nav class="navbar navbar-expand-lg
+         navbar-light bg-light rounded-pill">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCountry" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Country
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCountry">
+                                <!-- Add dropdown items for Country -->
+                             {% for country in countries %}
+      <a class="dropdown-item" href="#">{{ country.countries_en }}</a>
+    {% endfor %}
+                                  <li><a class="dropdown-item" href="#">Country 2</a></li>
+                                <!-- Add more items as needed -->
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBrand" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Brand
+                            </a>
+                            {% for brand in brands %}
+                     <li><a class="dropdown-item" href="#">{{ brand.name }}</a></li>
+                      {% endfor %}
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownStore" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Store
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownStore">
+                                <!-- Add dropdown items for Store -->
+                                <li><a class="dropdown-item" href="#">{{item.stores}}</a></li>
+                                <li><a class="dropdown-item" href="#">{{item.stores}}</a></li>
+                                <!-- Add more items as needed -->
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+       
+        
+         {% endcomment %}
+
+
+    <body class="bg-beige p-8">
+    <div class="container">
+        <!-- Search bars and other content -->
+        <h2>Product Search</h2>
+        <form method="get" action="{% url 'products' %}">
+            <!-- Your existing search bar code here -->
+        </form>
+
+        <form method="get" action="{% url 'products' %}" class="flex items-center justify-center space-x-4">
+            <input name='qurey' class="w-40 py-2 px-4 border rounded-md" type="text" value="{{ qurey }}" placeholder="Enter a product name">
+            <input name='qurey_package' class="w-40 py-2 px-4 border rounded-md" type="text" value="{{ qurey_package }}" placeholder="Enter a package name">
+            <button class='py-3 px-12 text-xl bg-green-400 text-white rounded-md' type="submit">Search</button>
+        </form>
+
  <div class="col-span-3">
     <div>
      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -49,6 +200,13 @@
         </div>
     </div>
 </div> 
+</div>
+
+<script>
+    function resetPage() {
+        window.location.href = window.location.origin + window.location.pathname;
+    }
+</script> <! ––when clicking on Grocery Shopping Assistant the page will reload and get back to the primary look before typing anything in the searching bars  ––>
 
 </body>
-</html>
+</html> 

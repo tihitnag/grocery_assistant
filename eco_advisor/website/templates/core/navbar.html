@@ -1,0 +1,13 @@
+<!-- core/navbar.html -->
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="countryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Country
+  </button>
+  <div class="dropdown-menu" aria-labelledby="countryDropdown">
+    {% for country in countries %}
+      <a class="dropdown-item" href="{%url 'navbar 'country %}">{{ country.countries_en }}</a>
+    {% endfor %}
+    
+  </div>
+</div>

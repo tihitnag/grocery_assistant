@@ -3,7 +3,8 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from .forms import ProductSearchForm
 from django.db.models import Q
-from .models import Eco  # Import your m
+from .models import Eco 
+ # Import your m
 import pandas as pd
 
 
@@ -23,10 +24,11 @@ def detail(request,pk):
     item=get_object_or_404(Eco,pk=pk)
    
     product=Eco.objects.filter()
-    catagory=Eco.objects.filter(Q(main_category_en__icontains=item.main_category_en)).order_by("NutriScore") [:5]
+    catagory = Eco.objects.filter(Q(categories_en__icontains=item.categories_en) & Q(EcoScore__gt=40)&Q(NutriScore__lt=10)).order_by("-EcoScore", "NutriScore")[:5]
+
     for i in catagory:
-        
-        print("mmmmmmmmmm",i.NutriScore,i.product_name)
+       
+        print("mmmmmmmmmm",i.NutriScore,i.product_name,i.EcoScore)
     
     nutro_score,total_positive_points,total_negative_points,energy_negative,sugars_negative,saturated_fats_negative,salt_negative,fruits_vegetables_positive,fiber_positive,protein_positive=clculate_nutri_score_calculation(item.energy_100g,item.sugars_100g,item.saturated_fat_100g ,item.salt_100g,item.fruits_vegetables_nuts_100g,item.fiber_100g,item.proteins_100g)
     print(nutro_score)
@@ -34,23 +36,18 @@ def detail(request,pk):
     print(package1,"package ")
     
     
-    return render(request,'core/detail.html',{"item":item,'nutro_score':nutro_score,'total_positive_points':total_positive_points,"total_negative_points":total_negative_points,'energy_negative':energy_negative,'sugars_negative':sugars_negative,'saturated_fats_negative':saturated_fats_negative,'salt_negative':salt_negative,'fiber_positive':fiber_positive,"protein_positive":protein_positive,"fruits_vegetables_positive":fruits_vegetables_positive,"package1":package1})
-     
-# def packages(request):
-#     print('mmmm')
-#     qurey_package = request.GET.get('qurey_package',)
-#     print('mmkk')
-#     package = Eco.objects.all()  # Using all() to get all instances
-    
-#     if qurey_package:
-#         package = package.filter(Q(packaging_en__icontains=qurey_package))  # Fix the typo here
-    
-    
-    
-#     return render(request, 'core/search_prodcuts.html', {'package': package, 'qurey_package': qurey_package})
+    return render(request,'core/detail.html',{"item":item,'nutro_score':nutro_score,'total_positive_points':total_positive_points,"total_negative_points":total_negative_points,'energy_negative':energy_negative,'sugars_negative':sugars_negative,'saturated_fats_negative':saturated_fats_negative,'salt_negative':salt_negative,'fiber_positive':fiber_positive,"protein_positive":protein_positive,"fruits_vegetables_positive":fruits_vegetables_positive,"package1":package1,'recommendation':catagory})
+def navbar(request):
+    countries = Eco.objects.all()
+    # countries=['france','uk']
+    print("kkkkkkkkmmmmmmmmmmmm")
+    return render(request, 'core/navbar.html', {'countries': countries})
 
 def search_products(request):
-
+   
+    countries = Eco.objects.values("countries_en").distinct()
+    # countries=['france','uk']
+    
     if request.method == 'POST':
         form = ProductSearchForm(request.POST)
         if form.is_valid():
@@ -60,9 +57,10 @@ def search_products(request):
     else:
         form = ProductSearchForm()
 
-    return render(request, 'core/search_prodcuts.html', {'form': form}) 
+    return render(request, 'core/search_prodcuts.html', {'form': form,'countries': countries}) 
 
 def search_package(request):
+   
     print('ffff')
     if request.method == 'POST':
         
@@ -76,7 +74,7 @@ def search_package(request):
         form = packageingSearchForm()
     
 
-    return render(request, 'core/search_prodcuts.html', {'form': form})
+    return render(request, 'core/search_prodcuts.html', {'form': form,})
 
 def clculate_nutri_score_calculation(energy, sugars, saturated_fats, salt, fruits_vegetables, fiber, protein):
     # Your calculatioan function here
